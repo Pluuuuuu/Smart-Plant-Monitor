@@ -1,0 +1,7 @@
+models.py → Database tables
+
+schemas.py → Request/response validation
+
+crud.py → Raw DB operations (low-level)
+
+controllers → The endpoints in main.py
