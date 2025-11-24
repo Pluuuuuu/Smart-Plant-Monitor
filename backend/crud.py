@@ -95,7 +95,12 @@ def get_dashboard_data(db: Session):
             "ideal_moisture_min": plant.ideal_moisture_min,
             "ideal_moisture_max": plant.ideal_moisture_max,
             "latest_reading": latest_value,
+            "last_reading": {
+                "moisture_percent": latest.moisture_percent,
+                "timestamp": (latest.timestamp.isoformat() + "Z") if (latest and latest.timestamp) else None
+            } if latest else None,
             "status": status,
         })
 
     return dashboard_items
+

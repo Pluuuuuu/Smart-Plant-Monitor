@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Smart Plant Monitor – Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/variables.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="spm-page">
+    <div id="spm-header-container"></div>
+
+    <main class="spm-main">
+
+       <!-- Hero section -->
+      <section class="spm-hero">
+        <div class="spm-hero-content">
+          <h1 class="spm-hero-title">Your Shrubs At a Glance</h1>
+          <p class="spm-hero-subtitle">
+            Monitor moisture and plant health easily so your green companions
+            thrive.
+          </p>
+        </div>
+        <div class="spm-hero-image">
+          <img src="../assests/hero-section-img.png">
+        </div>
+      </section>
+
+      <!-- Statistic boxes (Total, OK, Needs Water, etc.) -->
+      <section class="spm-stats-row">
+        <div class="spm-stat-card spm-stat-total">
+          <div class="spm-stat-label">Total Plants</div>
+          <div class="spm-stat-value" id="stat-total">0</div>
+        </div>
+        <div class="spm-stat-card spm-stat-warning">
+          <div class="spm-stat-label">Needs Water</div>
+          <div class="spm-stat-value">
+            <span id="stat-needs">0</span>
+            <span class="spm-stat-pill warning">Needs Water</span>
+          </div>
+        </div>
+        <div class="spm-stat-card spm-stat-danger">
+          <div class="spm-stat-label">Overwatered</div>
+          <div class="spm-stat-value">
+            <span id="stat-over">0</span>
+            <span class="spm-stat-pill danger">Overwatered</span>
+          </div>
+        </div>
+        <div class="spm-stat-card spm-stat-ok">
+          <div class="spm-stat-label">OK</div>
+          <div class="spm-stat-value">
+            <span id="stat-ok">0</span>
+            <span class="spm-stat-pill ok">OK</span>
+          </div>
+        </div>
+        <div class="spm-stat-card spm-stat-nodata">
+          <div class="spm-stat-label">No Data</div>
+          <div class="spm-stat-value" id="stat-nodata">0</div>
+        </div>
+      </section>
+
+      <!-- Table of all plants -->
+      <section class="spm-table-card">
+        <div class="spm-table-header">
+          <div class="spm-table-title">All Plants</div>
+          <div class="spm-table-controls">
+            <select id="status-filter" class="spm-select">
+              <option value="all">Status: All</option>
+              <option value="ok">OK</option>
+              <option value="needs_water">Needs Water</option>
+              <option value="overwatered">Overwatered</option>
+              <option value="no_data">No Data</option>
+            </select>
+            <!-- Search input -->
+            <input
+              id="search-input"
+              class="spm-search"
+              type="text"
+              placeholder="Search plants..."
+            />
+          </div>
+        </div>
+
+        <table class="spm-table" id="plants-table">
+          <thead>
+            <tr>
+              <th>Plant Name</th>
+              <th>Species</th>
+              <th>Ideal Moisture Range</th>
+              <th>Last Reading</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <!-- JS will insert <tr> rows here, magic *sparkle* -->
+          <tbody></tbody>
+        </table>
+      </section>
+    </main>
+
+    <!-- Footer placeholder -->
+    <div id="spm-footer-container" class="spm-footer"></div>
+
+    <!-- Helper JS utilities -->
+    <script src="../shared/utils.js"></script>
+    <!-- Dashboard logic -->
+    <script src="script.js"></script>
+  </body>
+</html>

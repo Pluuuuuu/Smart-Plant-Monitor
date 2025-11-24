@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Plant - Smart Shrub Monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/variables.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="spm-page">
+    <div id="spm-header-container"></div>
+
+    <main class="spm-main">
+      <div class="spm-form-wrapper">
+        <div class="spm-form-header">
+          <a href="../dashboard/index.html" class="spm-back-link">
+            <span class="spm-back-icon">←</span>
+            <span>Edit Plant</span>
+          </a>
+        </div>
+
+        <div class="spm-form-card">
+          <div class="spm-last-updated" id="last-updated"></div>
+          
+          <h1 class="spm-form-title">Plant Details</h1>
+          <p class="spm-form-subtitle">
+            Update the details for your plant. Accurate moisture settings help ensure optimal care.
+          </p>
+
+          <form id="plant-edit-form">
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                <span class="spm-label-icon">🌿</span>
+                Plant Name *
+              </label>
+              <div class="spm-input-wrapper">
+                <span class="spm-input-icon">🌿</span>
+                <input
+                  type="text"
+                  id="name"
+                  class="spm-input"
+                  placeholder="e.g., Fiddle Leaf Fig"
+                  required
+                  minlength="3"
+                />
+              </div>
+              <div class="spm-error" id="name-error"></div>
+            </div>
+
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                <span class="spm-label-icon">🌿</span>
+                Species
+              </label>
+              <div class="spm-input-wrapper">
+                <span class="spm-input-icon">🌿</span>
+                <input
+                  type="text"
+                  id="species"
+                  class="spm-input"
+                  placeholder="e.g., Ficus lyrata"
+                />
+              </div>
+            </div>
+
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                <span class="spm-label-icon">💧</span>
+                Ideal Moisture Minimum (%) *
+              </label>
+              <div class="spm-slider-container">
+                <input
+                  type="range"
+                  id="moisture-min"
+                  class="spm-slider"
+                  min="0"
+                  max="100"
+                  value="30"
+                  required
+                />
+                <span class="spm-slider-value" id="min-value">30%</span>
+              </div>
+              <div class="spm-error" id="min-error"></div>
+            </div>
+
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                <span class="spm-label-icon">💧</span>
+                Ideal Moisture Maximum (%) *
+              </label>
+              <div class="spm-slider-container">
+                <input
+                  type="range"
+                  id="moisture-max"
+                  class="spm-slider"
+                  min="0"
+                  max="100"
+                  value="70"
+                  required
+                />
+                <span class="spm-slider-value" id="max-value">70%</span>
+              </div>
+              <div class="spm-error" id="max-error"></div>
+            </div>
+
+            <div class="spm-form-actions">
+              <button
+                type="button"
+                class="spm-btn-ghost"
+                onclick="window.location.href='../dashboard/index.html'"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="spm-btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <div id="spm-footer-container"></div>
+
+    <script src="../shared/utils.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+

@@ -1,0 +1,41 @@
+:root {
+  --color-primary: #0f6761;
+  --color-primary-dark: #0b4b46;
+  --color-primary-soft: #b7d9d7;
+  --color-accent: #bbd189;
+  --color-success: #208b3a;
+  --color-danger: #d9534f;
+  --color-warning: #f0ad4e;
+  --color-bg: #f5f7f9;
+  --color-card-bg: #ffffff;
+  --color-text-main: #1f2933;
+  --color-text-muted: #6b7280;
+  --color-border: #d1d5db;
+
+  --radius-card: 18px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 10px 30px rgba(15, 103, 97, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Archivo", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}

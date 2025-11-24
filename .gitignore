@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
 ENV/
@@ -13,7 +13,7 @@ ENV/
 .env
 *.env
 
-# IDE settings
+# Editor settings
 .vscode/
 .idea/
 
@@ -24,17 +24,19 @@ Thumbs.db
 # Pytest cache
 .pytest_cache/
 
-# MySQL artifacts (just in case)
-*.sql
-
-# FastAPI/uvicorn logs (if created)
+# Logs
 *.log
 
-# Frontend build files (if added later)
+# Database dumps
+*.sql
+
+# JS/Frontend dependencies
 node_modules/
+
+# Build outputs (if added later)
 dist/
 build/
 
-# Temporary files
+# Temp files
 *.tmp
 *.bak

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime # import column types and FK
 from sqlalchemy.orm import relationship # import relationship helper
-from datetime import datetime # import timestamp generator
+from datetime import datetime, timezone # import timestamp generator
 # import Base class used to define models
 from backend.database import Base
 
@@ -29,7 +29,7 @@ class Reading(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     plant_id = Column(Integer, ForeignKey("plants.id"), nullable=False)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     moisture_percent = Column(Float, nullable=False)
 
     # Many readings → one plant

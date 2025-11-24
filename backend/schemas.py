@@ -28,24 +28,6 @@ class PlantCreate(PlantBase):
     pass
 
 
-    @validator("ideal_moisture_min")
-    def validate_min(cls, v):
-        if v < 0 or v > 100:
-            raise ValueError("ideal_moisture_min must be between 0 and 100")
-        return v
-
-    @validator("ideal_moisture_max")
-    def validate_max(cls, v, values):
-        min_val = values.get("ideal_moisture_min")
-
-        if v < 0 or v > 100:
-            raise ValueError("ideal_moisture_max must be between 0 and 100")
-
-        if min_val is not None and v < min_val:
-            raise ValueError("ideal_moisture_max must be >= ideal_moisture_min")
-
-        return v
-
 class PlantUpdate(PlantBase):
     pass
 

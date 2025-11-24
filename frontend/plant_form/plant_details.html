@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plant Details - Smart Shrub Monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/variables.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="spm-page">
+    <div id="spm-header-container"></div>
+
+    <main class="spm-main">
+      <div class="spm-plant-details-wrapper">
+        <div class="spm-form-header">
+          <a href="../dashboard/index.html" class="spm-back-link">
+            <span class="spm-back-icon">←</span>
+            <span id="plant-name-header">Plant Details</span>
+          </a>
+        </div>
+
+        <div class="spm-plant-details-header">
+          <div>
+            <h1 class="spm-plant-name" id="plant-name">Plant Name</h1>
+            <p class="spm-plant-species" id="plant-species">Species</p>
+          </div>
+          <div class="spm-plant-status-block">
+            <span id="plant-status-pill" class="spm-status-pill spm-status-nodata">
+              No Data
+            </span>
+            <div class="spm-status-meta">
+              <span id="last-reading-short">Last reading: –</span><br />
+              <span id="ideal-range-label">Ideal: –</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="spm-plant-details-grid">
+          <div class="spm-plant-card" style="background-color: var(--color-primary-soft);">
+            <h2 class="spm-card-title">Current Snapshot</h2>
+            <div class="spm-snapshot-row">
+              <div>
+                <div class="spm-snapshot-label">Last Moisture</div>
+                <div class="spm-snapshot-value" id="last-moisture-value">–</div>
+              </div>
+              <div>
+                <div class="spm-snapshot-label">Measured At</div>
+                <div class="spm-snapshot-sub" id="last-moisture-time">–</div>
+              </div>
+            </div>
+            <div class="spm-snapshot-row">
+              <div>
+                <div class="spm-snapshot-label">Ideal Range</div>
+                <div class="spm-snapshot-sub" id="ideal-range">–</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="spm-plant-card">
+            <h2 class="spm-card-title">Quick Actions</h2>
+            <div class="spm-actions-col">
+              <button
+                type="button"
+                class="spm-btn-primary-large"
+                id="btn-log-reading"
+              >
+                Log New Reading
+              </button>
+              <button
+                type="button"
+                class="spm-btn-ghost-large"
+                id="btn-edit-plant"
+              >
+                Edit Plant Settings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="spm-plant-card">
+          <h2 class="spm-card-title">Historical Moisture Readings</h2>
+          <p class="spm-card-subtitle">
+            Latest readings recorded for this plant.
+          </p>
+          <table class="spm-table" id="readings-table">
+            <thead>
+              <tr>
+                <th>Moisture (%)</th>
+                <th>Status</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="readings-tbody">
+              <tr>
+                <td colspan="3" style="text-align: center; color: var(--color-text-muted);">
+                  Loading...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <div id="spm-footer-container"></div>
+
+    <script src="../shared/utils.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+

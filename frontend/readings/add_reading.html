@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Moisture Reading - Smart Shrub Monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../shared/variables.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="spm-page">
+    <div id="spm-header-container"></div>
+
+    <main class="spm-main">
+      <div class="spm-form-wrapper">
+        <div class="spm-form-header">
+          <a href="../dashboard/index.html" class="spm-back-link">
+            <span class="spm-back-icon">←</span>
+            <span>Add Moisture Reading</span>
+          </a>
+        </div>
+
+        <div class="spm-form-card">
+          <h1 class="spm-form-title">Log New Moisture Reading</h1>
+          <p class="spm-form-subtitle">
+            Record a new moisture reading for your plant.
+          </p>
+
+          <form id="reading-form">
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                Select Plant *
+              </label>
+              <div class="spm-input-wrapper">
+                <span class="spm-input-icon"><img src="../assests/leaf.png" width="20" height="20"></span>
+                <select id="plant-select" class="spm-input spm-select" required>
+                  <option value="">Select a plant...</option>
+                </select>
+              </div>
+              <div class="spm-error" id="plant-error"></div>
+            </div>
+
+            <div class="spm-form-field">
+              <label class="spm-field-label">
+                Moisture Percentage (0-100) *
+              </label>
+              <div class="spm-input-wrapper">
+                <span class="spm-input-icon"><img src="../assests/drop.png" width="20" height="20"></span>
+                <input
+                  type="number"
+                  id="moisture-percent"
+                  class="spm-input"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="e.g., 45"
+                  required
+                />
+              </div>
+              <div class="spm-error" id="moisture-error"></div>
+            </div>
+
+
+            <div class="spm-form-actions">
+              <button
+                type="button"
+                class="spm-btn-ghost"
+                onclick="window.location.href='../dashboard/index.html'"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="spm-btn-primary">Save Reading</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <div id="spm-footer-container"></div>
+
+    <script src="../shared/utils.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+
