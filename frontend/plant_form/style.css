@@ -547,10 +547,28 @@
   border-bottom: 2px solid #e5e7eb;
 }
 
+.spm-table th.spm-table-timestamp,
+.spm-table td.spm-table-timestamp {
+  text-align: center;
+  padding-left: 32px;
+}
+
 .spm-table td {
   padding: 12px;
   border-bottom: 1px solid #e5e7eb;
   color: var(--color-text-main);
+}
+
+.spm-table th.spm-table-actions,
+.spm-table td.spm-table-actions {
+  text-align: center;
+  width: 80px;
+}
+
+.spm-table td.spm-table-actions .spm-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .spm-table tbody tr:hover {

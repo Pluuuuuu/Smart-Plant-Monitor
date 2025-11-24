@@ -26,6 +26,16 @@ async function apiPut(path, body) {
   return res.json();
 }
 
+async function apiDelete(path) {
+  const res = await fetch(API_BASE + path, {
+    method: "DELETE",
+  });
+  if (!res.ok) throw new Error(`DELETE ${path} failed: ${res.status}`);
+  // Some DELETE endpoints may not return a body
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
 function formatDateTime(isoString) {
   if (!isoString) return "Unknown";
   // Ensure the string ends with Z if it doesn't have timezone info

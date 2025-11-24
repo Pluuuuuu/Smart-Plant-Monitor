@@ -32,23 +32,30 @@ def get_plant_by_id(db: Session, plant_id: int):
 # Update plant
 def update_plant(db: Session, plant_id: int, data: PlantUpdate):
     plant = get_plant_by_id(db, plant_id)
-    if plant:
-        plant.name = data.name
-        plant.species = data.species
-        plant.ideal_moisture_min = data.ideal_moisture_min
-        plant.ideal_moisture_max = data.ideal_moisture_max
-        db.commit()
-        db.refresh(plant)
+    if not plant:
+        return None
+    
+    plant.name = data.name
+    plant.species = data.species
+    plant.ideal_moisture_min = data.ideal_moisture_min
+    plant.ideal_moisture_max = data.ideal_moisture_max
+    
+    db.commit()
+    db.refresh(plant)
     return plant
 
 
 # Delete plant
 def delete_plant(db: Session, plant_id: int):
-    plant = get_plant_by_id(db, plant_id)
-    if plant:
-        db.delete(plant)
-        db.commit()
-    return plant
+    plant = db.query(Plant).filter(Plant.id == plant_id).first()
+    if not plant:
+        return False
+
+    db.delete(plant)
+    db.commit()
+    return True
+
+
 
 
 # Add a moisture reading
@@ -103,4 +110,14 @@ def get_dashboard_data(db: Session):
         })
 
     return dashboard_items
+
+# DELETE a specific reading
+def delete_reading(db: Session, reading_id: int):
+    reading = db.query(Reading).filter(Reading.id == reading_id).first()
+    if not reading:
+        return False
+
+    db.delete(reading)
+    db.commit()
+    return True
 

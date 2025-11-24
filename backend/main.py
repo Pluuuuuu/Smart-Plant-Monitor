@@ -67,6 +67,13 @@ def delete_plant(plant_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Plant not found")
     return {"message": "Plant deleted"}
 
+# Delete a specific reading
+@app.delete("/readings/{reading_id}")
+def delete_reading(reading_id: int, db: Session = Depends(get_db)):
+    deleted = crud.delete_reading(db, reading_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Reading not found")
+    return {"message": "Reading deleted"}
 
 
 

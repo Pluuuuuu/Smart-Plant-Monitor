@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initDashboard().catch((err) => console.error(err));
 });
 
+let dashboardData = [];
+let statusFilterEl = null;
+let searchInputEl = null;
+
 function statusClass(status) {
   switch ((status || "").toLowerCase()) {
     case "ok":
@@ -21,21 +25,21 @@ function statusClass(status) {
 //main dashoard function
 async function initDashboard() {
   //get filter + search elements
-  const statusFilter = document.getElementById("status-filter");
-  const searchInput = document.getElementById("search-input");
+  statusFilterEl = document.getElementById("status-filter");
+  searchInputEl = document.getElementById("search-input");
 
-  const data = await apiGet("/dashboard");
+  dashboardData = await apiGet("/dashboard");
 
-  renderStats(data);
-  renderTable(data, "", "all");
+  renderStats(dashboardData);
+  renderTable(dashboardData, "", "all");
 
   // Update table when filter changes
-  statusFilter.addEventListener("change", () => {
-    renderTable(data, searchInput.value, statusFilter.value);
+  statusFilterEl.addEventListener("change", () => {
+    renderTable(dashboardData, searchInputEl.value, statusFilterEl.value);
   });
   // Update table when user types
-  searchInput.addEventListener("input", () => {
-    renderTable(data, searchInput.value, statusFilter.value);
+  searchInputEl.addEventListener("input", () => {
+    renderTable(dashboardData, searchInputEl.value, statusFilterEl.value);
   });
 }
 
@@ -141,6 +145,13 @@ function renderTable(plants, searchTerm, statusFilter) {
           <img src="../assests/add-square-svgrepo-com.svg" alt="View" width="20" height="20">
         </span>
 
+        <!-- Delete Plant -->
+        <span class="spm-link-icon"
+          title="Delete plant"
+          onclick="handleDeletePlant(${plant.id})">
+          <img src="../assests/delete-2-svgrepo-com.svg" alt="Delete plant" width="20" height="20">
+        </span>
+
       </td>
     `;
 
@@ -159,5 +170,27 @@ function formatStatusLabel(status) {
       return "OK";
     default:
       return "No Data";
+  }
+}
+
+async function handleDeletePlant(plantId) {
+  if (!plantId) return;
+  const confirmed = window.confirm(
+    "Delete this plant? This removes the plant and all readings."
+  );
+  if (!confirmed) return;
+
+  try {
+    await apiDelete(`/plants/${plantId}`);
+    dashboardData = dashboardData.filter((plant) => plant.id !== plantId);
+    renderStats(dashboardData);
+    renderTable(
+      dashboardData,
+      searchInputEl?.value || "",
+      statusFilterEl?.value || "all"
+    );
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete plant. Please try again.");
   }
 }

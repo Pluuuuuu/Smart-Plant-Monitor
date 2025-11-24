@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+let currentPlantId = null;
+let currentPlant = null;
+let currentReadings = [];
+
 // Initialize Add Plant form
 function initAddPlant() {
   const form = document.getElementById("plant-form");
@@ -296,10 +300,11 @@ async function initPlantDetails() {
     return;
   }
 
+  currentPlantId = plantId;
+
   // Load plant data
-  let plant;
   try {
-    plant = await apiGet(`/plants/${plantId}`);
+    currentPlant = await apiGet(`/plants/${plantId}`);
   } catch (err) {
     alert("Failed to load plant details.");
     console.error(err);
@@ -308,58 +313,32 @@ async function initPlantDetails() {
   }
 
   // Load readings
-  let readings = [];
   try {
-    readings = await apiGet(`/readings/${plantId}`);
+    currentReadings = await apiGet(`/readings/${plantId}`);
     // Sort by timestamp descending
-    readings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    currentReadings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   } catch (err) {
     // Try alternative endpoint
     try {
-      readings = await apiGet(`/plants/${plantId}/readings`);
-      readings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      currentReadings = await apiGet(`/plants/${plantId}/readings`);
+      currentReadings.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
     } catch (err2) {
       console.warn("Could not load readings:", err2);
+      currentReadings = [];
     }
   }
 
-  // Get latest reading
-  const latestReading = readings.length > 0 ? readings[0] : null;
-  const latestValue = latestReading ? latestReading.moisture_percent : null;
-
-  // Compute status
-  const status = computeStatus(
-    plant.ideal_moisture_min,
-    plant.ideal_moisture_max,
-    latestValue
-  );
-
   // Update page content
-  document.getElementById("plant-name").textContent = plant.name;
-  document.getElementById("plant-name-header").textContent = plant.name;
+  document.getElementById("plant-name").textContent = currentPlant.name;
+  document.getElementById("plant-name-header").textContent = currentPlant.name;
   document.getElementById("plant-species").textContent =
-    plant.species || "Unknown species";
+    currentPlant.species || "Unknown species";
 
-  const statusPill = document.getElementById("plant-status-pill");
-  statusPill.className = `spm-status-pill ${getStatusClass(status)}`;
-  statusPill.textContent = formatStatusLabel(status);
-
-  const idealRange = `${plant.ideal_moisture_min}% - ${plant.ideal_moisture_max}%`;
+  const idealRange = `${currentPlant.ideal_moisture_min}% - ${currentPlant.ideal_moisture_max}%`;
   document.getElementById("ideal-range").textContent = idealRange;
   document.getElementById("ideal-range-label").textContent = `Ideal: ${idealRange}`;
 
-  if (latestReading) {
-    document.getElementById("last-moisture-value").textContent = `${latestValue}%`;
-    document.getElementById("last-moisture-time").textContent = formatDateTime(
-      latestReading.timestamp
-    );
-    document.getElementById("last-reading-short").textContent =
-      `Last reading: ${formatRelative(latestReading.timestamp)}`;
-  } else {
-    document.getElementById("last-moisture-value").textContent = "–";
-    document.getElementById("last-moisture-time").textContent = "–";
-    document.getElementById("last-reading-short").textContent = "Last reading: –";
-  }
+  updatePlantSnapshot();
 
   // Setup button actions
   document.getElementById("btn-log-reading").addEventListener("click", () => {
@@ -371,7 +350,11 @@ async function initPlantDetails() {
   });
 
   // Render readings history
-  renderReadingsHistory(readings, plant.ideal_moisture_min, plant.ideal_moisture_max);
+  renderReadingsHistory(
+    currentReadings,
+    currentPlant.ideal_moisture_min,
+    currentPlant.ideal_moisture_max
+  );
 }
 
 // Render readings history table
@@ -380,7 +363,7 @@ function renderReadingsHistory(readings, idealMin, idealMax) {
   tbody.innerHTML = "";
 
   if (!readings || readings.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--color-text-muted);">No readings yet.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--color-text-muted);">No readings yet.</td></tr>`;
     return;
   }
 
@@ -395,14 +378,70 @@ function renderReadingsHistory(readings, idealMin, idealMax) {
       <td>
         <span class="spm-status-pill ${statusClass}">${statusLabel}</span>
       </td>
-      <td>
+      <td class="spm-table-timestamp">
         <span style="display: inline-flex; align-items: center; gap: 6px;">
           <span>🕐</span>
           <span>${formatDateTime(reading.timestamp)}</span>
         </span>
       </td>
+      <td class="spm-table-actions">
+        <span class="spm-link-icon"
+          title="Delete reading"
+          onclick="handleDeleteReading(${reading.id})">
+          <img src="../assests/delete-2-svgrepo-com.svg" alt="Delete reading" width="18" height="18">
+        </span>
+      </td>
     `;
     tbody.appendChild(tr);
   });
+}
+
+function updatePlantSnapshot() {
+  if (!currentPlant) return;
+  const latestReading = currentReadings.length > 0 ? currentReadings[0] : null;
+  const latestValue = latestReading ? latestReading.moisture_percent : null;
+
+  const status = computeStatus(
+    currentPlant.ideal_moisture_min,
+    currentPlant.ideal_moisture_max,
+    latestValue
+  );
+
+  const statusPill = document.getElementById("plant-status-pill");
+  statusPill.className = `spm-status-pill ${getStatusClass(status)}`;
+  statusPill.textContent = formatStatusLabel(status);
+
+  if (latestReading) {
+    document.getElementById("last-moisture-value").textContent = `${latestValue}%`;
+    document.getElementById("last-moisture-time").textContent = formatDateTime(
+      latestReading.timestamp
+    );
+    document.getElementById("last-reading-short").textContent =
+      `Last reading: ${formatRelative(latestReading.timestamp)}`;
+  } else {
+    document.getElementById("last-moisture-value").textContent = "–";
+    document.getElementById("last-moisture-time").textContent = "–";
+    document.getElementById("last-reading-short").textContent = "Last reading: –";
+  }
+}
+
+async function handleDeleteReading(readingId) {
+  if (!readingId) return;
+  const confirmed = window.confirm("Delete this reading? This cannot be undone.");
+  if (!confirmed) return;
+
+  try {
+    await apiDelete(`/readings/${readingId}`);
+    currentReadings = currentReadings.filter((reading) => reading.id !== readingId);
+    renderReadingsHistory(
+      currentReadings,
+      currentPlant.ideal_moisture_min,
+      currentPlant.ideal_moisture_max
+    );
+    updatePlantSnapshot();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete reading. Please try again.");
+  }
 }
 
