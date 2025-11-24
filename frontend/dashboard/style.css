@@ -202,6 +202,10 @@
   color: var(--color-danger);
 }
 
+.spm-stat-pill.no-data {
+    background-color: #e5e7eb;
+    color: #374151;
+}
 .spm-table-card {
   background-color: var(--color-card-bg);
   border-radius: var(--radius-card);
