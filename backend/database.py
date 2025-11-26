@@ -3,8 +3,15 @@ import pymysql
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from pathlib import Path
 
-load_dotenv()
+# Load .env from backend directory (for local dev) or project root (for Docker)
+env_path = Path(__file__).parent / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
+else:
+    # Fallback to project root .env (for Docker)
+    load_dotenv()
 
 MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")

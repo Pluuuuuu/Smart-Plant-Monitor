@@ -1,4 +1,9 @@
-const API_BASE = "http://127.0.0.1:8000";
+// API base URL - works in both development and Docker
+// In Docker, nginx proxies /api to the backend service
+// Check if we're accessing via port 3000 (Docker) or direct backend access
+const API_BASE = window.location.port === '3000' || window.location.port === ''
+  ? "/api"  // Use proxy in Docker (port 3000) or when no port specified
+  : "http://127.0.0.1:8000";  // Direct connection for local development
 
 async function apiGet(path) {
   const res = await fetch(API_BASE + path);
