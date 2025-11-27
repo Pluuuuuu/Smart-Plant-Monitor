@@ -427,9 +427,10 @@
     color: var(--color-danger);
 }
 
-.spm-status-nodata {
-  background-color: var(--color-accent);
-  color: #ffffff;
+.spm-status-nodata,
+.spm-status-pill.spm-status-nodata {
+  background-color: #e5e7eb !important;
+  color: #374151 !important;
 }
 
 .spm-status-meta {
