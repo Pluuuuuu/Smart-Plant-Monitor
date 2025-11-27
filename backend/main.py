@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
+from pathlib import Path
 
 from backend.database import engine, get_db
 from backend.models import Base
@@ -100,3 +102,12 @@ def get_readings(plant_id: int, db: Session = Depends(get_db)):
 @app.get("/dashboard")
 def get_dashboard(db: Session = Depends(get_db)):
     return crud.get_dashboard_data(db)
+
+
+# Mount static files (frontend) - must be after all API routes
+# Get the project root directory (parent of backend directory)
+project_root = Path(__file__).parent.parent
+frontend_dir = project_root / "frontend"
+
+if frontend_dir.exists():
+    app.mount("/", StaticFiles(directory=str(frontend_dir), html=True), name="static")
