@@ -51,6 +51,12 @@ def delete_plant(db: Session, plant_id: int):
     if not plant:
         return False
 
+    # 1) Delete all readings for this plant
+    db.query(Reading).filter(Reading.plant_id == plant_id).delete(
+        synchronize_session=False
+    )
+
+    # 2) Delete the plant itself
     db.delete(plant)
     db.commit()
     return True
